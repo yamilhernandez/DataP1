@@ -1,4 +1,5 @@
 package list;
+
 public interface ListFactory<E> {
 	
 	/**
