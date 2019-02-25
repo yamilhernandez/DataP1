@@ -2,13 +2,22 @@ package polynomial;
 
 import java.util.Iterator;
 
+import list.List;
+import list.ListFactory;
+
 public class PolynomialImp implements Polynomial{
+	
+	private List<Term> list;
+	private ListFactory<Term> factory= TermListFactory.newListFactory();
 	
 	
 	
 	
 	
 	public PolynomialImp(String poly) {
+		
+		this.list= factory.newInstance();
+		
 		
 	}
 

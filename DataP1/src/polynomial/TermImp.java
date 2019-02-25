@@ -3,18 +3,15 @@ package polynomial;
 public class TermImp implements Term {
 	
 	public int exponent;
-	public int coefficient;
+	public double coefficient;
 	
 	
-	public TermImp( int e, int c) {
+	public TermImp( int e, double c) {
 		
 		this.exponent=e;
 		this.coefficient=c;
 		
 	}
-	
-	
-
 	@Override
 	public double getCoefficient() {
 		
