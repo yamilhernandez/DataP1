@@ -1,8 +1,18 @@
 package list;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 public class ArrayList<E> implements List<E>{
+	private E[] element;
+	private int size = 0;
+	private int INITCAP = 10;
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList() {
+			element = (E[]) new Object[INITCAP];
+			size = 0;
+	}
 
 	@Override
 	public Iterator<E> iterator() {
@@ -12,9 +22,14 @@ public class ArrayList<E> implements List<E>{
 
 	@Override
 	public void add(E obj) {
-		// TODO Auto-generated method stub
+			if (element.length - size <= element.length / 2) {
+				this.reSizeArray();
+			}
+
+			element[size++] = obj;
+		}
 		
-	}
+	
 
 	@Override
 	public void add(int index, E obj) {
@@ -98,6 +113,9 @@ public class ArrayList<E> implements List<E>{
 	public void clear() {
 		// TODO Auto-generated method stub
 		
+	}
+	public void reSizeArray() {
+		element = Arrays.copyOf(element, element.length * 2);
 	}
 
 }
