@@ -6,27 +6,35 @@ public class TermImp implements Term {
 	public double coefficient;
 	
 	
-	public TermImp( int e, double c) {
+	public TermImp(double coeff, int expo) {
 		
-		this.exponent=e;
-		this.coefficient=c;
+		this.exponent=expo;
+		this.coefficient=coeff;
 		
 	}
 	@Override
 	public double getCoefficient() {
 		
-		return this.coefficient;
+		return coefficient;
 	}
 
 	@Override
 	public int getExponent() {
 		
-		return this.exponent;
+		return exponent;
 	}
-
+	public void setExponent(int exponent) {
+		this.exponent = exponent;
+	}
+	public void setCoefficient(double coefficient) {
+		this.coefficient = coefficient;
+	}
 	@Override
 	public double evaluate(double x) {
 		return (this.coefficient) * (Math.pow(x, this.exponent));
 	}
+	
+	
+	
 
 }

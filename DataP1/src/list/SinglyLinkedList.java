@@ -51,16 +51,39 @@ private static class Node<T>{
 
 	@Override
 	public void add(E obj) {
-		// TODO Auto-generated method stub
-		
+		if (this.isEmpty()) {
+			this.header = new Node(obj, null);
+
+		}
+		else {
+			Node<E> newNode = new Node<E>(obj,null );
+			Node<E> temp = this.findNode(this.size() - 1);
+			temp.setNext(newNode);
+		}
+		this.size++;
 	}
 
 	@Override
 	public void add(int index, E obj) {
-		// TODO Auto-generated method stub
-		
-	}
+		if (index == this.size()) {
+			this.add(obj);
+			return;
+		}
+		this.checkIndex(index);
 
+		if (index == 0) {
+			Node<E> newNode = new Node<E>(obj, null);
+			newNode.setNext(this.header);
+			this.header = newNode;
+		}
+		else {
+			Node<E> newNode = new Node<E>(obj, null);
+			Node<E> temp = this.findNode(index-1);
+			newNode.setNext(temp.getNext());
+			temp.setNext(newNode);
+		}
+		this.size++;
+	}
 	@Override
 	public boolean remove(E obj) {
 		// TODO Auto-generated method stub
@@ -69,9 +92,31 @@ private static class Node<T>{
 
 	@Override
 	public boolean remove(int index) {
-		// TODO Auto-generated method stub
-		return false;
+		if (this.isEmpty()) {
+			return false;
+		}
+		this.checkIndex(index);
+		if (index == 0) {
+			Node<E> temp = this.header;
+			E result = temp.getElement();
+			this.header = this.header.getNext();
+			temp.setNext(null);
+			temp.setElement(null);
+			this.size--;
+			return true;
+		}
+		else {
+			Node<E> temp1 = this.findNode(index - 1);
+			Node<E> temp2 = temp1.getNext();
+			E result = temp2.getElement();
+			temp1.setNext(temp2.getNext());
+			temp2.setNext(null);
+			temp2.setElement(null);
+			this.size--;
+			return true;
+		}
 	}
+	
 
 	@Override
 	public int removeAll(E obj) {
@@ -81,16 +126,19 @@ private static class Node<T>{
 
 	@Override
 	public E get(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		this.checkIndex(index);
+		Node<E> target = this.findNode(index);
+		return target.getElement();
 	}
 
 	@Override
 	public E set(int index, E obj) {
-		// TODO Auto-generated method stub
-		return null;
+		this.checkIndex(index);
+		Node<E> target = this.findNode(index);
+		E result = target.getElement();
+		target.setElement(obj);
+		return result;
 	}
-
 	@Override
 	public E first() {
 		// TODO Auto-generated method stub
@@ -117,26 +165,29 @@ private static class Node<T>{
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
 		return this.size;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.size() == 0;
 	}
 
 	@Override
 	public boolean contains(E obj) {
-		// TODO Auto-generated method stub
+		Node<E> curr= header;
+		while(curr.getNext()!= null) {
+			if (curr.getElement().equals(obj)) {
+				return true;
+			}
+		curr= curr.getNext();
+		}
 		return false;
 	}
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		header.setNext(null);
 	}
 	
 	private Node<E> findNode(int index) {

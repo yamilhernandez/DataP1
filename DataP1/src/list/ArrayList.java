@@ -120,15 +120,10 @@ public class ArrayList<E> implements List<E>{
 
 	@Override
 	public E get(int index) throws IndexOutOfBoundsException {
-		if (index < 0 || index >= size)
-			throw new IndexOutOfBoundsException("remove: invalid index = " + index);
-		E removed = element[index];
-		moveDataOnePositionTL(index + 1, size - 1);
-		element[size - 1] = null;
-		size--;
-		if (element.length - size > MAXEMPTYPOS)
-			reSizeArray(CAPTOAR);
-		return removed;
+		if ((index < 0 ) || (index >= this.size())) {
+			throw new IndexOutOfBoundsException();
+		}
+		return this.element[index];
 
 	}
 

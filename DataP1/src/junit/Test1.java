@@ -27,6 +27,11 @@ public class Test1 {
 	@Test
 	public void testAdd() {
 		Polynomial P3 = P1.add(P2);
+		PolynomialImp p3= (PolynomialImp) P3;
+			for (int i = 0; i < p3.list.size(); i++) {
+		System.out.println("Coeff=" + p3.list.get(i).getCoefficient());
+		System.out.println("Expo=" + p3.list.get(i).getExponent());
+	}
 		Polynomial P4 = new PolynomialImp("12x^2+3");
 		System.out.printf("Add-> P3: %s, P4: %s\n", P3, P4);
 		assertTrue(P3.equals(P4));
