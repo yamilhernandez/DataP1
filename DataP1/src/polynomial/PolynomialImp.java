@@ -18,10 +18,7 @@ public class PolynomialImp implements Polynomial{
 	public PolynomialImp(String poly) {
 		this.list= factory.newInstance();
 		createTerms(poly);
-	/*	for (int i = 0; i < list.size(); i++) {
-			System.out.println("Coeff=" + list.get(i).getCoefficient());
-			System.out.println("Expo=" + list.get(i).getExponent());
-		}*/
+		
 		
 		
 		
@@ -37,14 +34,18 @@ public class PolynomialImp implements Polynomial{
 	@Override
 	public Polynomial add(Polynomial P2) {
 		PolynomialImp p2= (PolynomialImp) P2;
-		for (int i = 0; i < this.list.size(); i++) {
-			for (int j = i; j <p2.list.size(); j++) {
-				if(this.list.get(i).getExponent()==p2.list.get(j).getExponent()) {
-					double newCoeff = this.list.get(i).getCoefficient() + p2.list.get(j).getCoefficient();
+		for (int i = 0; i < p2.list.size(); i++) {
+			boolean added=false;
+			for (int j = 0; j < this.list.size(); j++) {
+				if(p2.list.get(i).getExponent()==this.list.get(j).getExponent()) {
+					double newCoeff = this.list.get(i).getCoefficient() +p2.list.get(j).getCoefficient();
 					this.list.set(i, new TermImp(newCoeff, this.list.get(i).getExponent()));
+					added=true;
 				}
 			}
-		
+			if(added==false) {
+				this.list.add(p2.list.get(i));
+			}
 		}
 		return this;
 	}
@@ -126,20 +127,34 @@ public class PolynomialImp implements Polynomial{
 	private void createTerms(String poly) {
 		String [] terms=poly.split("\\+");
 		for (int i = 0; i < terms.length; i++) {
+			System.out.println(terms[i]);
+			
+		}
+		for (int i = 0; i < terms.length; i++) {
 			int expo;
 			double coeff;
 			for (int j = 0; j < terms[i].length(); j++) {
 				if(terms[i].contains("^")) {
 					if(terms[i].charAt(j)== '^') {
 						expo= Integer.parseInt(terms[i].substring(j+1));
-						coeff= Double.parseDouble(terms[i].substring(0, j-1));
+						if(!terms[i].startsWith("x")){
+							coeff= Double.parseDouble(terms[i].substring(0, j-1));
+						}
+						else {coeff= 1;}
 						this.list.add(new TermImp(coeff,expo));
+						
 					}
 				}
 				else if(terms[i].contains("x")) {
 					if(terms[i].charAt(j)== 'x') {
 						expo=1;
-						coeff=Double.parseDouble(terms[i].substring(0, j));
+						if(!terms[i].startsWith("x")){
+							coeff=Double.parseDouble(terms[i].substring(0, j));
+						}
+						else {
+							coeff= 1;
+						}
+						
 						this.list.add(new TermImp(coeff,expo));
 					}
 				}
