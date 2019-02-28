@@ -28,10 +28,10 @@ public class Test2 {
 		Polynomial P3 = P1.add(P2);
 		Polynomial P4 = new PolynomialImp("4x^2+2x+3");
 		PolynomialImp p3= (PolynomialImp) P3;
-		for (int i = 0; i < p3.list.size(); i++) {
+		/*for (int i = 0; i < p3.list.size(); i++) {
 			System.out.println("Coeff=" + p3.list.get(i).getCoefficient());
 			System.out.println("Expo=" + p3.list.get(i).getExponent());
-		}
+		}*/
 		System.out.printf("Add-> P3: %s, P4: %s\n", P3, P4);
 		assertTrue(P3.equals(P4));
 		
@@ -57,7 +57,7 @@ public class Test2 {
 	public void testMultiplyPolynomial() {
 		Polynomial P3 = P1.multiply(P2);
 		Polynomial P4 = new PolynomialImp("3x^4+2x^3+7x^2+4x+2");
-		System.out.printf("Multiply-> P3: %s, P4: %s\n", P3, P4);
+		System.out.printf("MultiplyPoly-> P3: %s, P4: %s\n", P3, P4);
 		assertTrue(P3.equals(P4));
 	}
 
@@ -110,7 +110,7 @@ public class Test2 {
 	public void testMultiplyDouble() {
 		Polynomial P3 = P1.multiply(0);
 		Polynomial P4 = new PolynomialImp("0");
-		System.out.printf("Multiply -> P3: %s, P4: %s\n", P3, P4);
+		System.out.printf("MultiplyDouble -> P3: %s, P4: %s\n", P3, P4);
 		assertTrue(P3.equals(P4));
 	}
 
