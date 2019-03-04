@@ -5,24 +5,17 @@ import java.util.Iterator;
 
 import list.List;
 import list.ListFactory;
+import list.ParameterCheck;
 
-public class PolynomialImp implements Polynomial, Comparable{
-	
+public class PolynomialImp implements Polynomial{
+
 	public List<Term> list;
 	private ListFactory<Term> factory= TermListFactory.newListFactory();
 	private Iterator<Term> iter;
-	
-	
-	
-	
-	
+
 	public PolynomialImp(String poly) {
 		this.list= factory.newInstance();
 		createTerms(poly);
-		
-		
-		
-		
 	}
 
 	@Override
@@ -50,7 +43,7 @@ public class PolynomialImp implements Polynomial, Comparable{
 			if(added==false) {
 				p1.list.add(p2.list.get(i));
 			}
-			
+
 		}
 		p1.organize();
 		return p1;
@@ -60,23 +53,7 @@ public class PolynomialImp implements Polynomial, Comparable{
 	public Polynomial subtract(Polynomial P2) {
 		PolynomialImp p1= new PolynomialImp(this.toString());
 		PolynomialImp p2= (PolynomialImp) P2;
-	/*	for (int i = 0; i < p2.list.size(); i++) {
-			boolean added=false;
-			for (int j = 0; j < this.list.size(); j++) {
-				if(p2.list.get(i).getExponent()==this.list.get(j).getExponent()) {
-					int expo= this.list.get(j).getExponent();
-					double newCoeff = this.list.get(j).getCoefficient() +(-1)*p2.list.get(i).getCoefficient();
-					this.list.set(j, new TermImp(newCoeff, expo));
-					added=true;
-					break;
-				}
-			}
-			if(added==false) {
-				this.list.add(new TermImp(p2.list.get(i).getCoefficient()*(-1), p2.list.get(i).getExponent()));
-			}
-		}
-		return this;*/
-		
+
 		return p1.add(p2.multiply(-1));
 	}
 
@@ -93,8 +70,8 @@ public class PolynomialImp implements Polynomial, Comparable{
 				result1.list.add(new TermImp( newCoeff,newExpo));
 			}
 			result=(PolynomialImp) result.add(result1);
-			
-			
+
+
 		}
 		for (int i = 0; i < result.list.size(); i++) {
 			System.out.println("Coeff=" + result.list.get(i).getCoefficient());
@@ -109,7 +86,7 @@ public class PolynomialImp implements Polynomial, Comparable{
 		for (int i = 0; i < p1.list.size(); i++) {
 			double newCoeff= c* p1.list.get(i).getCoefficient();
 			p1.list.set(i, new TermImp(newCoeff, p1.list.get(i).getExponent()));
-			
+
 		}
 		p1.organize();
 		return p1;
@@ -118,7 +95,7 @@ public class PolynomialImp implements Polynomial, Comparable{
 	@Override
 	public Polynomial derivative() {
 		PolynomialImp p1= new PolynomialImp(this.toString());
-		
+
 		for (int i = 0; i < p1.list.size(); i++) {
 			if(p1.list.get(i).getExponent()==0) {
 				p1.list.remove(i);
@@ -127,7 +104,7 @@ public class PolynomialImp implements Polynomial, Comparable{
 			double newCoeff= p1.list.get(i).getExponent()* p1.list.get(i).getCoefficient();
 			int newExpo= p1.list.get(i).getExponent()-1;
 			p1.list.set(i, new TermImp(newCoeff, newExpo));
-			
+
 		}
 		return p1;
 	}
@@ -157,7 +134,6 @@ public class PolynomialImp implements Polynomial, Comparable{
 			if(this.list.get(i).getExponent()>degree) {
 				degree=this.list.get(i).getExponent();
 			}
-			
 		}
 		return degree;
 	}
@@ -166,8 +142,6 @@ public class PolynomialImp implements Polynomial, Comparable{
 	public double evaluate(double x) {
 		double result=0;
 		for (int i = 0; i < this.list.size(); i++) {
-			//double coef= this.list.get(i).getCoefficient();
-			//int expo= this.list.get(i).getExponent();
 			result+= this.list.get(i).evaluate(x);
 		}
 		return result;
@@ -175,61 +149,66 @@ public class PolynomialImp implements Polynomial, Comparable{
 
 	@Override
 	public boolean equals(Polynomial P) {
-		PolynomialImp p= (PolynomialImp) P;
-		
-		for (int i = 0; i < this.list.size(); i++) {
-			int expToCheck= this.list.get(i).getExponent();
-			for (int j = 0; j < p.list.size(); j++) {
-				if(p.list.get(j).getExponent()== expToCheck) {
-					if(this.list.get(i).getCoefficient()!= p.list.get(j).getCoefficient()) {
-						return false;
-					}
-				}
-			}
-		}
-		return true;
+		String p1= this.toString();
+		String p2= P.toString();
+
+		return p1.equals(p2);
 	}
+	
 	public void organize() {
 		for (int i = 0; i < this.list.size(); i++) {
 			if(this.list.get(i).getCoefficient()==0) {
 				list.remove(i);
 			}
-			
+
 		}
 		for (int i = 0; i < list.size(); i++) {
 			if(this.list.get(i).getCoefficient()==0) {
 				list.set(i,new TermImp(0,0));
 			}
 		}
-		
-		
+		int n = this.list.size(); 
+		for (int i = 0; i < n-1; i++) {
+			for (int j = 0; j < n-i-1; j++) {
+				if (this.list.get(j).getExponent() < this.list.get(j+1).getExponent()) {
+
+					// Swap Terms
+					TermImp c1= (TermImp) this.list.get(j);
+					TermImp c2= (TermImp) this.list.get(j+1);
+					TermImp temp = c1; 
+					this.list.set(j, c2); 
+					this.list.set(j+1, temp);
+				} 
+			} 
+		}
 	}
-	
+
 	public String toString() {
 		String result ="";
 		DecimalFormat df = new DecimalFormat("####0.00");
 		for (int i = 0; i < list.size(); i++) {
 			if(this.list.get(i).getExponent()>1) {
-				
+
 				String coeff= df.format(this.list.get(i).getCoefficient());
 				String expo= Integer.toString(this.list.get(i).getExponent());
 				result+= coeff+"x^"+ expo+ '+';
 			}
 			if(this.list.get(i).getExponent()==1) {
 				String coeff= df.format(this.list.get(i).getCoefficient());
-				
+
 				result+= coeff+"x+";
 			}
 			if(this.list.get(i).getExponent()==0) {
 				String coeff= df.format(this.list.get(i).getCoefficient());
-				
+
 				result+= coeff;
 			}
 		}
 		return result;
 	}
-	
-	private void createTerms(String poly) {
+
+	private void createTerms(String poly) {	
+		ParameterCheck.checkNull(poly);
 		String [] terms=poly.split("\\+");
 		for (int i = 0; i < terms.length; i++) {
 			int expo;
@@ -243,7 +222,7 @@ public class PolynomialImp implements Polynomial, Comparable{
 						}
 						else {coeff= 1;}
 						this.list.add(new TermImp(coeff,expo));
-						
+
 					}
 				}
 				else if(terms[i].contains("x")) {
@@ -255,7 +234,7 @@ public class PolynomialImp implements Polynomial, Comparable{
 						else {
 							coeff= 1;
 						}
-						
+
 						this.list.add(new TermImp(coeff,expo));
 					}
 				}
@@ -269,9 +248,4 @@ public class PolynomialImp implements Polynomial, Comparable{
 		}
 	}
 
-	@Override
-	public int compareTo(Object arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 }
