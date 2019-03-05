@@ -1,19 +1,48 @@
 package list;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class SinglyLinkedList<E> implements List<E> {
-	
-private static class Node<T>{
-		
+
+	private class SinglyLinkedListIterator<E> implements Iterator<E>{
+		private int currentPosition;
+		List<E> list;
+
+		public SinglyLinkedListIterator(List<E> list){
+			this.currentPosition = 0;
+			this.list=list;
+		}
+		@Override
+		public boolean hasNext() {
+			return this.currentPosition < list.size();
+		}
+
+		@Override
+		public E next() {
+			if (this.hasNext()) {
+				E result = null;
+				result = (E) list.get(currentPosition);
+				currentPosition++;
+				return result;
+			}
+			else {
+				throw new NoSuchElementException();
+			}
+		}
+
+	}
+
+	private static class Node<T>{
+
 		private T element;
 		private Node<T> next;
-		
+
 		public Node(){
 			this.element = null;
 			this.next = null;
 		}
-		
+
 		public Node(T e, Node<T> N) {
 			this.element = e;
 			this.next = N;
@@ -34,7 +63,7 @@ private static class Node<T>{
 		public void setNext(Node<T> next) {
 			this.next = next;
 		}
-}
+	}
 	private Node<E> header;
 	private int size;
 
@@ -45,8 +74,7 @@ private static class Node<T>{
 
 	@Override
 	public Iterator<E> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new SinglyLinkedListIterator<>(this);
 	}
 
 	@Override
@@ -86,7 +114,12 @@ private static class Node<T>{
 	}
 	@Override
 	public boolean remove(E obj) {
-		// TODO Auto-generated method stub
+		for (int i = 0; i < this.size; i++) {
+			if(this.get(i).equals(obj)) {
+				this.remove(i);
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -116,12 +149,20 @@ private static class Node<T>{
 			return true;
 		}
 	}
-	
+
 
 	@Override
 	public int removeAll(E obj) {
-		// TODO Auto-generated method stub
-		return 0;
+		int count=0;
+		if(this.contains(obj)) {
+		for (int i = 0; i < this.size; i++) {
+			if(this.get(i).equals(obj)) {
+				this.remove(i);
+				count++;
+			}
+		}
+		}
+		return count;
 	}
 
 	@Override
@@ -141,26 +182,37 @@ private static class Node<T>{
 	}
 	@Override
 	public E first() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return this.header.getNext().getElement();
 	}
 
 	@Override
 	public E last() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.get(this.size-1);
 	}
 
 	@Override
 	public int firstIndex(E obj) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(this.contains(obj) && !this.isEmpty()) {
+			for (int i = 0; i < this.size; i++) {
+				if(this.get(i).equals(obj)) {
+					return i;
+				}
+			}
+		}
+		return -1;
 	}
 
 	@Override
 	public int lastIndex(E obj) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(this.contains(obj) && !this.isEmpty()) {
+			for (int i = this.size-1; i >= 0; i--) {
+				if(this.get(i).equals(obj)) {
+					return i;
+				}
+			}
+		}
+		return -1;
 	}
 
 	@Override
@@ -180,7 +232,7 @@ private static class Node<T>{
 			if (curr.getElement().equals(obj)) {
 				return true;
 			}
-		curr= curr.getNext();
+			curr= curr.getNext();
 		}
 		return false;
 	}
@@ -189,25 +241,25 @@ private static class Node<T>{
 	public void clear() {
 		header.setNext(null);
 	}
-	
+
 	private Node<E> findNode(int index) {
 		Node<E> temp = this.header;
 		int i = 0;
-		
+
 		while (i < index) {
 			temp = temp.getNext();
 			i++;
 		}
 		return temp;
-		
+
 	}
 
 	private void checkIndex(int index) {
 		if ((index < 0) || (index >= this.size())){
 			throw new IndexOutOfBoundsException();
 		}
-}
-	
-	
+	}
+
+
 
 }

@@ -28,10 +28,6 @@ public class Test2 {
 		Polynomial P3 = P1.add(P2);
 		Polynomial P4 = new PolynomialImp("4x^2+2x+3");
 		PolynomialImp p3= (PolynomialImp) P3;
-		/*for (int i = 0; i < p3.list.size(); i++) {
-			System.out.println("Coeff=" + p3.list.get(i).getCoefficient());
-			System.out.println("Expo=" + p3.list.get(i).getExponent());
-		}*/
 		System.out.printf("Add-> P3: %s, P4: %s\n", P3, P4);
 		assertTrue(P3.equals(P4));
 		
@@ -43,7 +39,6 @@ public class Test2 {
 		Polynomial P4 = new PolynomialImp("2x^2+2x+-1");
 		System.out.printf("Subtract I-> P3: %s, P4: %s\n", P3, P4);
 		assertTrue(P3.equals(P4));
-		
 		P3 = P1.subtract(P1);
 		P4 = new PolynomialImp("0");
 		System.out.printf("Subtract II-> P3: %s, P4: %s\n", P3, P4);

@@ -51,11 +51,6 @@ public class Test6 {
 	@Test
 	public void testMultiplyPolynomial() {
 		Polynomial P3 = P1.multiply(P2);
-		PolynomialImp p3= new PolynomialImp(P3.toString());
-		for (int i = 0; i < p3.list.size(); i++) {
-		System.out.println("Coeff=" + p3.list.get(i).getCoefficient());
-		System.out.println("Expo=" + p3.list.get(i).getExponent());
-	}
 		Polynomial P4 = new PolynomialImp("8x^5+-20x^4+58x^3+-34x^2+38x+30");
 		System.out.printf("Multiply 1-> P3: %s, P4: %s\n", P3, P4);
 		assertTrue(P3.equals(P4));
