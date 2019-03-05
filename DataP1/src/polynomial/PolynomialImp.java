@@ -2,13 +2,14 @@ package polynomial;
 
 import java.text.DecimalFormat;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import list.List;
 import list.ListFactory;
 import list.ParameterCheck;
 
 public class PolynomialImp implements Polynomial{
-
+	
 	public List<Term> list;
 	private ListFactory<Term> factory= TermListFactory.newListFactory();
 	private Iterator<Term> iter;
@@ -20,15 +21,13 @@ public class PolynomialImp implements Polynomial{
 
 	@Override
 	public Iterator<Term> iterator() {
-		//iter= new Iterator<Term>();
-
 		return iter;
 	}
 
 	@Override
 	public Polynomial add(Polynomial P2) {
-		PolynomialImp p1= new PolynomialImp(this.toString());
-		PolynomialImp p2= (PolynomialImp) P2;
+		PolynomialImp p1= new PolynomialImp(this.toString());    //Copy of target polynomial
+		PolynomialImp p2= (PolynomialImp) P2;					// Copy of parameter polynomial
 		for (int i = 0; i < p2.list.size(); i++) {
 			boolean added=false;
 			for (int j = 0; j < p1.list.size(); j++) {
@@ -51,8 +50,8 @@ public class PolynomialImp implements Polynomial{
 
 	@Override
 	public Polynomial subtract(Polynomial P2) {
-		PolynomialImp p1= new PolynomialImp(this.toString());
-		PolynomialImp p2= (PolynomialImp) P2;
+		PolynomialImp p1= new PolynomialImp(this.toString());				//Copy of target polynomial
+		PolynomialImp p2= (PolynomialImp) P2;			// Copy of parameter polynomial
 
 		return p1.add(p2.multiply(-1));
 	}
@@ -60,8 +59,8 @@ public class PolynomialImp implements Polynomial{
 	@Override
 	public Polynomial multiply(Polynomial P2) {
 		PolynomialImp result= new PolynomialImp("");
-		PolynomialImp p1= new PolynomialImp(this.toString());
-		PolynomialImp p2= (PolynomialImp) P2;
+		PolynomialImp p1= new PolynomialImp(this.toString());		//Copy of target polynomial
+		PolynomialImp p2= (PolynomialImp) P2;				// Copy of parameter polynomial
 		for (int i = 0; i < p2.list.size(); i++) {
 			PolynomialImp result1= new PolynomialImp("");
 			for (int j = 0; j < p1.list.size(); j++) {
@@ -70,19 +69,13 @@ public class PolynomialImp implements Polynomial{
 				result1.list.add(new TermImp( newCoeff,newExpo));
 			}
 			result=(PolynomialImp) result.add(result1);
-
-
-		}
-		for (int i = 0; i < result.list.size(); i++) {
-			System.out.println("Coeff=" + result.list.get(i).getCoefficient());
-			System.out.println("Expo=" + result.list.get(i).getExponent());
 		}
 		return result;
 	}
 
 	@Override
 	public Polynomial multiply(double c) {
-		PolynomialImp p1= new PolynomialImp(this.toString());
+		PolynomialImp p1= new PolynomialImp(this.toString());			//Copy of target polynomial
 		for (int i = 0; i < p1.list.size(); i++) {
 			double newCoeff= c* p1.list.get(i).getCoefficient();
 			p1.list.set(i, new TermImp(newCoeff, p1.list.get(i).getExponent()));
@@ -94,7 +87,7 @@ public class PolynomialImp implements Polynomial{
 
 	@Override
 	public Polynomial derivative() {
-		PolynomialImp p1= new PolynomialImp(this.toString());
+		PolynomialImp p1= new PolynomialImp(this.toString());			//Copy of target polynomial
 
 		for (int i = 0; i < p1.list.size(); i++) {
 			if(p1.list.get(i).getExponent()==0) {
@@ -116,7 +109,7 @@ public class PolynomialImp implements Polynomial{
 		for (int i = 0; i < this.list.size(); i++) {
 			result.list.add(new TermImp(list.get(i).getCoefficient()/(list.get(i).getExponent()+1),list.get(i).getExponent()+1));
 		}
-		result.list.add(new TermImp(1.00,0));
+		result.list.add(new TermImp(1.00,0));      //  constant of integration
 		return result;
 	}
 
@@ -164,9 +157,10 @@ public class PolynomialImp implements Polynomial{
 		}
 		for (int i = 0; i < list.size(); i++) {
 			if(this.list.get(i).getCoefficient()==0) {
-				list.set(i,new TermImp(0,0));
+				list.set(i,new TermImp(0,0));  //Used for comparing with an empty polynomial (0)
 			}
 		}
+		//Sorter
 		int n = this.list.size(); 
 		for (int i = 0; i < n-1; i++) {
 			for (int j = 0; j < n-i-1; j++) {
@@ -188,19 +182,17 @@ public class PolynomialImp implements Polynomial{
 		DecimalFormat df = new DecimalFormat("####0.00");
 		for (int i = 0; i < list.size(); i++) {
 			if(this.list.get(i).getExponent()>1) {
-
+				
 				String coeff= df.format(this.list.get(i).getCoefficient());
 				String expo= Integer.toString(this.list.get(i).getExponent());
 				result+= coeff+"x^"+ expo+ '+';
 			}
 			if(this.list.get(i).getExponent()==1) {
 				String coeff= df.format(this.list.get(i).getCoefficient());
-
 				result+= coeff+"x+";
 			}
 			if(this.list.get(i).getExponent()==0) {
 				String coeff= df.format(this.list.get(i).getCoefficient());
-
 				result+= coeff;
 			}
 		}
@@ -222,7 +214,6 @@ public class PolynomialImp implements Polynomial{
 						}
 						else {coeff= 1;}
 						this.list.add(new TermImp(coeff,expo));
-
 					}
 				}
 				else if(terms[i].contains("x")) {
@@ -247,5 +238,4 @@ public class PolynomialImp implements Polynomial{
 			}
 		}
 	}
-
 }

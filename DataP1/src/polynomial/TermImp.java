@@ -14,7 +14,6 @@ public class TermImp implements Term {
 	}
 	@Override
 	public double getCoefficient() {
-		
 		return coefficient;
 	}
 
